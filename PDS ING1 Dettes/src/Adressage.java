@@ -1,6 +1,6 @@
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
+import java.sql.*;
 
 public class Adressage {
 
