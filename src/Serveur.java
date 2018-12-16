@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import java.sql.*;
+import com.google.gson.*;
 
 public class Serveur {
 
@@ -68,6 +69,36 @@ public class Serveur {
             catch (Exception exc) {
                 exc.printStackTrace();
             }
+
+
+            // Le serveur lit l'âge du client
+            in = new BufferedReader (new InputStreamReader (socketduserveur.getInputStream()));
+            String age_client = in.readLine();
+            System.out.println("Le client a pour age : " + age_client);
+
+
+            // Le serveur lit le prénom
+            in = new BufferedReader (new InputStreamReader (socketduserveur.getInputStream()));
+            String prenom_client = in.readLine();
+            System.out.println("Le client s'appelle : " + prenom_client);
+
+
+            // GSON
+
+            // Le serveur crée un objet java User avec les infos du CLient
+            User user_client = new User(age_client, prenom_client);
+
+            // On crée une instance Gson
+            Gson gson = new Gson();
+            // On crée l'objet Json depuis le user_client crée précédemment avec les input
+            String json = gson.toJson(user_client);
+
+            // On désérialise ce json en un objet Java
+            Gson gson1 = new Gson();
+            User User2 = gson.fromJson(json,User.class);
+
+
+
 
             socketduserveur.close();
             socketserver.close();

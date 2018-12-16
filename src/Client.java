@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 import java.sql.*;
+import com.google.gson.*;
 
 public class Client {
 
@@ -35,6 +36,26 @@ public class Client {
             message = sc.nextLine();
             out.println(message);
             out.flush();
+
+
+            // Le client envoie au serveur son age
+            out = new PrintWriter(socket.getOutputStream());
+            String age;
+            Scanner sc2 = new Scanner(System.in);
+            System.out.println("Entrez votre age :");
+            age = sc.nextLine();
+            out.println(age);
+            out.flush();
+
+            // Le client envoie au serveur son prenom
+            out = new PrintWriter(socket.getOutputStream());
+            String prenom;
+            Scanner sc3 = new Scanner(System.in);
+            System.out.println("Entrez votre prenom :");
+            prenom = sc.nextLine();
+            out.println(prenom);
+            out.flush();
+
 
             socket.close();
 
