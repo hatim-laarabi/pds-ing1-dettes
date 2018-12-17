@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="PDS ING1 Dettes">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/PDS_ING1_Dettes_jar/PDS ING1 Dettes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
