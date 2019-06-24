@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.sql.*;
 import com.google.gson.*;
+import java.util.Scanner;
 
 public class Serveur {
 
@@ -20,7 +21,8 @@ public class Serveur {
         BufferedReader in;
         PrintWriter out;
 
-        try {
+        /* try {
+
 
 // Le serveur ouvre le socket et se met à l'écoute
             socketserver = new ServerSocket(2009);
@@ -107,6 +109,66 @@ public class Serveur {
 
             e.printStackTrace();
         }
+    */ }
+
+        public void ajout_panne(){
+
+            Scanner input = new Scanner(System.in);
+
+        int id_panne;
+        int nb_pieces;
+        int cout_pieces = 0;
+        int nb_heures;
+
+
+        System.out.println("Pour enregistrer une panne, entrez le nombre de pièces à remplacer.");
+        nb_pieces = input.nextInt();
+
+        for(int j = nb_pieces; j< 0; j--){
+            System.out.println("Entrez le coût de la pièce n°" + j + ".");
+            cout_pieces = cout_pieces + input.nextInt();
+            }
+
+            System.out.println("Entrez le nombre d'heures dont vous avez besoin pour effectuer l'opération.");
+            nb_heures = input.nextInt();
+
+
+            String url = "jdbc:mysql://localhost/dettes";
+            String login = "root";
+            String passwd = "root";
+            Connection cn = null;
+            Statement st = null;
+
+            int cout_panne = cout_pieces +  10 * nb_heures;
+
+            try{
+                // 1 : Chargement du driver
+                Class.forName("com.mysql.jdbc.Driver");
+                // 2 : Récupération de la connexion
+                cn = DriverManager.getConnection(url, login, passwd);
+                // 3 : Création d'un statement
+                st = cn.createStatement();
+                String sql = "INSERT INTO 'pannes' VALUES ('','" + nb_pieces + "'," + cout_panne + "','" + nb_heures + "')";
+                // 4 : Execution requete
+                st.executeUpdate(sql);
+            }
+
+            catch (SQLException e){
+                e.printStackTrace();
+            }
+            catch (ClassNotFoundException e){
+                e.printStackTrace();
+            } finally {
+                try {
+                    // 5 : libérer ressources mémoire
+                    cn.close();
+                    st.close();
+                } catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }
+
+
     }
 
 }
