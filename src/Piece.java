@@ -1,10 +1,10 @@
-public class Pieces {
+public class Piece {
 
     private int id_piece;
     private String nb_piece;
     private int prix;
 
-    public Pieces(int id_piece, String nb_piece, int prix) {
+    public Piece(int id_piece, String nb_piece, int prix) {
         this.id_piece = id_piece;
         this.nb_piece = nb_piece;
         this.prix = prix;
