@@ -133,7 +133,7 @@ public class Serveur {
             nb_heures = input.nextInt();
 
 
-            String url = "jdbc:mysql://localhost/dettes";
+            String url = "jdbc:mysql://localhost:3306/dette";
             String login = "root";
             String passwd = "root";
             Connection cn = null;
@@ -170,5 +170,7 @@ public class Serveur {
 
 
     }
+
+    
 
 }
