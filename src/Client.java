@@ -32,30 +32,23 @@ public class Client {
             out = new PrintWriter(socket.getOutputStream());
             String message;
             Scanner sc = new Scanner(System.in);
-            System.out.println("Entrez un message pour le serveur :");
+            System.out.println("Entrez le nombre de pièces pour le serveur :");
             message = sc.nextLine();
             out.println(message);
             out.flush();
 
+            for(int n = 1; n <= Integer.parseInt(message); n++) {
 
-            // Le client envoie au serveur son age
-            out = new PrintWriter(socket.getOutputStream());
-            String age;
-            Scanner sc2 = new Scanner(System.in);
-            System.out.println("Entrez votre age :");
-            age = sc.nextLine();
-            out.println(age);
-            out.flush();
+                // Le client envoie au serveur le prix de chaque pièce
+                out = new PrintWriter(socket.getOutputStream());
+                String prix_pieceN;
+                System.out.println("Entrez le cout de la pièce "+n+" pour le serveur :");
+                prix_pieceN = sc.nextLine();
+                out.println(prix_pieceN);
+                out.flush();
 
-            // Le client envoie au serveur son prenom
-            out = new PrintWriter(socket.getOutputStream());
-            String prenom;
-            Scanner sc3 = new Scanner(System.in);
-            System.out.println("Entrez votre prenom :");
-            prenom = sc.nextLine();
-            out.println(prenom);
-            out.flush();
 
+            }
 
             socket.close();
 
