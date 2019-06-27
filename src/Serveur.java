@@ -137,7 +137,7 @@ public class Serveur {
             // On crée l'objet Java de la Panne
             Panne p = new Panne(0,nb_pieces,cout_pieces,nb_heures,cout_panne);
 
-            String url = "jdbc:mysql://localhost:3306/dette";
+            String url = "jdbc:mysql://localhost:3306/dette?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
             String login = "root";
             String passwd = "root";
             Connection cn = null;
@@ -147,12 +147,12 @@ public class Serveur {
 
             try{
                 // 1 : Chargement du driver
-                Class.forName("com.mysql.jdbc.Driver");
+                Class.forName("com.mysql.cj.jdbc.Driver");
                 // 2 : Récupération de la connexion
                 cn = DriverManager.getConnection(url, login, passwd);
                 // 3 : Création d'un statement
                 st = cn.createStatement();
-                String sql = "INSERT INTO 'pannes' VALUES ('','" + nb_pieces + "'," + cout_panne + "','" + nb_heures + "')";
+                String sql = "INSERT INTO pannes VALUES (" + nb_pieces + " ," + cout_pieces +" ,"+ cout_panne + ",'" + cout_pieces+cout_panne +"')";
                 // 4 : Execution requete
                 st.executeUpdate(sql);
             }
