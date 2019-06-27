@@ -109,9 +109,9 @@ public class Serveur {
 
             e.printStackTrace();
         }
-    */ }
+    */
 
-        public void ajout_panne(){
+        //public void ajout_panne(){
 
             Scanner input = new Scanner(System.in);
 
@@ -124,14 +124,18 @@ public class Serveur {
         System.out.println("Pour enregistrer une panne, entrez le nombre de pièces à remplacer.");
         nb_pieces = input.nextInt();
 
-        for(int j = nb_pieces; j< 0; j--){
-            System.out.println("Entrez le coût de la pièce n°" + j + ".");
+        for(int n = 1; n <= nb_pieces; n++){
+            System.out.println("Entrez le coût de la pièce n°" + n + ".");
             cout_pieces = cout_pieces + input.nextInt();
             }
 
             System.out.println("Entrez le nombre d'heures dont vous avez besoin pour effectuer l'opération.");
             nb_heures = input.nextInt();
 
+            int cout_panne = cout_pieces +  10 * nb_heures;
+
+            // On crée l'objet Java de la Panne
+            Panne p = new Panne(0,nb_pieces,cout_pieces,nb_heures,cout_panne);
 
             String url = "jdbc:mysql://localhost:3306/dette";
             String login = "root";
@@ -139,7 +143,7 @@ public class Serveur {
             Connection cn = null;
             Statement st = null;
 
-            int cout_panne = cout_pieces +  10 * nb_heures;
+
 
             try{
                 // 1 : Chargement du driver
@@ -171,6 +175,6 @@ public class Serveur {
 
     }
 
-    
 
 }
+// }

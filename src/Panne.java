@@ -4,13 +4,15 @@ public class Panne {
     private int nb_pieces;
     private int cout_pieces;
     private int nb_heures;
+    private int cout_panne;
 
-    public Panne (int id_panne, int nb_pieces, int cout_pieces, int nb_heure) {
+    public Panne (int id_panne, int nb_pieces, int cout_pieces, int nb_heure, int cout_panne) {
 
         this.id_panne = id_panne;
         this.nb_pieces = nb_pieces;
         this.cout_pieces = cout_pieces;
         this.nb_heures = nb_heure;
+        this.cout_panne = cout_panne;
 
     }
 
@@ -44,5 +46,13 @@ public class Panne {
 
     public void setNb_heures(int nb_heures) {
         this.nb_heures = nb_heures;
+    }
+
+    public int getCout_panne() {
+        return cout_panne;
+    }
+
+    public void Cout_panne(int cout_panne) {
+        this.cout_panne = cout_panne;
     }
 }
