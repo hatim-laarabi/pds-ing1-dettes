@@ -16,12 +16,24 @@ public class Serveur {
 
     public static void main(String[] zero) {
 
+        boolean restart = true;
+
+ while(restart){
+
+
+
         ServerSocket socketserver  ;
         Socket socketduserveur ;
         BufferedReader in;
         PrintWriter out;
 
-        /* try {
+        int id_panne;
+        int nb_pieces;
+        int cout_pieces = 0;
+        int nb_heures;
+
+
+        try {
 
 
 // Le serveur ouvre le socket et se met à l'écoute
@@ -34,108 +46,54 @@ public class Serveur {
 
 // Le serveur envoie un message de bienvenue au client
             out = new PrintWriter(socketduserveur.getOutputStream());
-            out.println("Serveur : Coucou, client.");
+            out.println("Serveur : Pour enregistrer une panne, entrez le nombre de pièces à remplacer.");
             out.flush();
 
  // Le serveur lit le message du client
             in = new BufferedReader (new InputStreamReader (socketduserveur.getInputStream()));
             String message_distant = in.readLine();
-            System.out.println("Le client a dit : " + message_distant);
 
-// Le serveur se connecte à la base de données et y stock le message du client
-            try {
 
-                //connection to database
-                Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost/dette?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC","root", "root");
-                System.out.println("CONNEXION DB");
-
-                // create a Statement from the connection
-                Statement statement = myConn.createStatement();
-
-                // insert the data
-                statement.executeUpdate("INSERT INTO messages (text_message) VALUES ('"+message_distant+"')");
+            nb_pieces = Integer.parseInt(message_distant);
 
 
 
-                //create statement
-                Statement myStmt = myConn.createStatement();
+            for(int n = 1; n <= nb_pieces; n++){
+                out = new PrintWriter(socketduserveur.getOutputStream());
+                out.println("Serveur : Entrez le coût de la pièce " +n+"");
+                out.flush();
 
-                //execute sql query
-                ResultSet myRs = myStmt.executeQuery("select * from messages");
+                in = new BufferedReader (new InputStreamReader (socketduserveur.getInputStream()));
+                String reponse_piece = in.readLine();
 
-                //results set
-                while (myRs.next()) {
-                    System.out.println(myRs.getString("id_message")+ " ," +myRs.getString("text_message"));
-                }
-            }
-            catch (Exception exc) {
-                exc.printStackTrace();
+                cout_pieces = cout_pieces + Integer.parseInt(reponse_piece);
             }
 
 
-            // Le serveur lit l'âge du client
+            out = new PrintWriter(socketduserveur.getOutputStream());
+            out.println("Entrez le nombre d'heures dont vous avez besoin pour effectuer l'opération.");
+            out.flush();
+
             in = new BufferedReader (new InputStreamReader (socketduserveur.getInputStream()));
-            String age_client = in.readLine();
-            System.out.println("Le client a pour age : " + age_client);
-
-
-            // Le serveur lit le prénom
-            in = new BufferedReader (new InputStreamReader (socketduserveur.getInputStream()));
-            String prenom_client = in.readLine();
-            System.out.println("Le client s'appelle : " + prenom_client);
-
-
-            // GSON
-
-            // Le serveur crée un objet java User avec les infos du CLient
-            User user_client = new User(age_client, prenom_client);
-
-            // On crée une instance Gson
-            Gson gson = new Gson();
-            // On crée l'objet Json depuis le user_client crée précédemment avec les input
-            String json = gson.toJson(user_client);
-
-            // On désérialise ce json en un objet Java
-            Gson gson1 = new Gson();
-            User User2 = gson.fromJson(json,User.class);
-
-
-
-
-            socketduserveur.close();
-            socketserver.close();
-
-        }catch (IOException e) {
-
-            e.printStackTrace();
-        }
-    */
-
-        //public void ajout_panne(){
-
-            Scanner input = new Scanner(System.in);
-
-        int id_panne;
-        int nb_pieces;
-        int cout_pieces = 0;
-        int nb_heures;
-
-
-        System.out.println("Pour enregistrer une panne, entrez le nombre de pièces à remplacer.");
-        nb_pieces = input.nextInt();
-
-        for(int n = 1; n <= nb_pieces; n++){
-            System.out.println("Entrez le coût de la pièce n°" + n + ".");
-            cout_pieces = cout_pieces + input.nextInt();
-            }
-
-            System.out.println("Entrez le nombre d'heures dont vous avez besoin pour effectuer l'opération.");
-            nb_heures = input.nextInt();
+            String reponse_heures = in.readLine();
+            nb_heures = Integer.parseInt(reponse_heures);
 
             int cout_panne = cout_pieces +  10 * nb_heures;
 
+
+
             // On crée l'objet Java de la Panne
             Panne p = new Panne(0,nb_pieces,cout_pieces,nb_heures,cout_panne);
+
+
+            // On détermine la rentabilité de la panne pour le réparateur.
+            out = new PrintWriter(socketduserveur.getOutputStream());
+            if(cout_panne < 8000)
+                out.println("Serveur : La réparation coûte "+cout_panne+". Elle est rentable.");
+            else{
+                out.println("Serveur : La réparation coûte "+cout_panne+". Elle N'EST PAS rentable. Faire une demande d'achat au service achat.");
+            }
+            out.flush();
 
             String url = "jdbc:mysql://localhost:3306/dette?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
             String login = "root";
@@ -173,8 +131,47 @@ public class Serveur {
             }
 
 
+
+
+            // GSON
+
+
+
+            // On crée une instance Gson
+            Gson gson = new Gson();
+            // On crée l'objet Json depuis le user_client crée précédemment avec les input
+            String json = gson.toJson(p);
+
+            // On désérialise ce json en un objet Java
+            Gson gson1 = new Gson();
+            Panne Panne2 = gson.fromJson(json,Panne.class);
+
+
+
+            // Le serveur lit le message du client
+            in = new BufferedReader (new InputStreamReader (socketduserveur.getInputStream()));
+            String restart_answer = in.readLine();
+
+            if(restart_answer.equals("0")){
+                restart = false;
+            }
+
+
+            socketduserveur.close();
+            socketserver.close();
+
+        }catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
+
+
+
+
+
     }
 
-
+    }
 }
 // }
